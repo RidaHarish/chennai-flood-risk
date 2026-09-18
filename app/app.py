@@ -4,13 +4,13 @@ import pandas as pd
 from pathlib import Path
 import streamlit.components.v1 as components
 
-st.set_page_config(page_title="Chennai Flood Risk Prediction", page_icon="🌊", layout="wide")
+st.set_page_config(page_title="Chennai Flood Risk Prediction", layout="wide")
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_PATH = ROOT / "models" / "random_forest_spatial.pkl"
 MAP_PATH = ROOT / "outputs" / "chennai_flood_risk_map.html"
 
-st.title("🌊 Chennai Flood Risk Prediction")
+st.title("Chennai Flood Risk Prediction")
 st.caption("AI-assisted risk estimate. This is a probability estimate, not a guarantee.")
 
 try:
@@ -34,7 +34,7 @@ with col2:
     latitude = st.number_input("Latitude", value=13.05000, format="%.5f")
     longitude = st.number_input("Longitude", value=80.25000, format="%.5f")
 
-if st.button("🔍 PREDICT FLOOD RISK", use_container_width=True):
+if st.button("PREDICT FLOOD RISK", use_container_width=True):
 
     X = pd.DataFrame([{
         "elevation_m": elevation,
@@ -63,21 +63,21 @@ if st.button("🔍 PREDICT FLOOD RISK", use_container_width=True):
         st.metric("Risk Level", risk)
 
     if risk == "HIGH":
-        st.error("🔴 HIGH FLOOD RISK")
+        st.error("HIGH FLOOD RISK")
     elif risk == "MODERATE":
-        st.warning("🟡 MODERATE FLOOD RISK")
+        st.warning("MODERATE FLOOD RISK")
     else:
-        st.success("🟢 LOW FLOOD RISK")
+        st.success("LOW FLOOD RISK")
 
     st.subheader("Model Probabilities")
 
-    st.write(f"🟢 LOW: {probabilities[0] * 100:.1f}%")
-    st.write(f"🟡 MODERATE: {probabilities[1] * 100:.1f}%")
-    st.write(f"🔴 HIGH: {probabilities[2] * 100:.1f}%")
+    st.write(f"LOW: {probabilities[0] * 100:.1f}%")
+    st.write(f"MODERATE: {probabilities[1] * 100:.1f}%")
+    st.write(f"HIGH: {probabilities[2] * 100:.1f}%")
 
     st.info("Factors used: elevation, slope, distance from river, land cover and geographic location.")
 
 if MAP_PATH.exists():
-    st.header("🗺️ Chennai Flood Risk Map")
+    st.header("Chennai Flood Risk Map")
     html = MAP_PATH.read_text(encoding="utf-8")
     components.html(html, height=650, scrolling=True)
